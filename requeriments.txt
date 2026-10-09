@@ -1,0 +1,7 @@
+﻿Django==4.2.x
+djangorestframework==3.14.x
+whitenoise==6.x.x
+gunicorn==21.x.x
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
+django-environ==0.11.x
