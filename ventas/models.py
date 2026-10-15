@@ -1,6 +1,7 @@
 # ventas/models.py
 """Modelos de la app ventas — Espiral 2 W05.
 
+
 Modelos implementados:
     Venta        — encabezado de una venta interna.
     DetalleVenta — línea de producto dentro de una venta.
@@ -16,11 +17,15 @@ from decimal import Decimal
 
 from django.db import models
 
+from decimal import Decimal
+from django.core.validators import MinValueValidator
+from django.db import models
+from django.core.exceptions import ValidationError
+
 from clientes.models  import Cliente
 from productos.models import Producto
 
 
-# ── Venta ─────────────────────────────────────────────────────────────────
 
 class Venta(models.Model):
     """Encabezado de una venta interna.
@@ -117,6 +122,17 @@ class DetalleVenta(models.Model):
             self.precio_unitario = self.producto.precio
         super().save(*args, **kwargs)
 
+    def clean(self) -> None:
+        """Validación de negocio para línea de detalle.
+
+        Raises:
+            ValidationError: si cantidad < 1.
+        """
+        if self.cantidad is not None and self.cantidad < 1:
+            raise ValidationError(
+                {'cantidad': 'La cantidad debe ser al menos 1.'}
+            )
+
 
 # ── Pedido ─────────────────────────────────────────────────────────────────
 
@@ -160,10 +176,36 @@ class Pedido(models.Model):
         null=True, blank=True, verbose_name='Fecha de entrega'
     )
     total_pagado  = models.DecimalField(
+
         max_digits=10, decimal_places=2,
         null=True, blank=True,
         verbose_name='Total pagado'
     )
+
+
+    max_digits=10,
+    decimal_places=2,
+    null=True,
+    blank=True,
+    validators=[MinValueValidator(Decimal('0.00'))],  # ← agregar
+    verbose_name='Total pagado'
+    
+    # Agregar dentro de la clase Pedido:
+
+    def clean(self) -> None:
+        """Valida que la fecha de entrega no sea anterior al pedido.
+
+        Raises:
+            ValidationError: si fecha_entrega < fecha_pedido.date().
+        """
+        if (self.fecha_entrega and self.fecha_pedido and
+                self.fecha_entrega < self.fecha_pedido.date()):
+            raise ValidationError({
+                'fecha_entrega': (
+                    'La fecha de entrega no puede ser anterior '
+                    'a la fecha del pedido.'
+                )
+            })
 
     class Meta:
         verbose_name        = 'Pedido'
