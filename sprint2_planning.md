@@ -12,10 +12,10 @@ protegidos por autenticación y 3 roles de acceso.
 
 | ID | Historia | Puntos | Semana |
 |---|---|---|---|
-| HU-E3-01 | Como encargado, quiero ver la lista de productos | 2 | W07 |
-| HU-E3-02 | Como admin, quiero ver el detalle de un producto | 2 | W07 |
-| HU-E3-03 | Como encargado, quiero ver listas de clientes y proveedores | 2 | W07 |
-| HU-E3-04 | Como admin, quiero ver el detalle de ventas con sus líneas | 3 | W07 |
+| HU-E3-01 | Como encargado, quiero ver la lista de productos | ✅ | W07 |
+| HU-E3-02 | Como admin, quiero ver el detalle de un producto | ✅ | W07 |
+| HU-E3-03 | Como encargado, quiero ver listas de clientes y proveedores | ✅ | W07 |
+| HU-E3-04 | Como admin, quiero ver el detalle de ventas con sus líneas | ✅ | W07 |
 | HU-E3-05 | Como admin, quiero crear y editar productos | 3 | W08 |
 | HU-E3-06 | Como vendedor, quiero registrar nuevas ventas con detalles | 5 | W08 |
 | HU-E3-07 | Como admin, quiero eliminar registros con confirmación | 2 | W08 |
