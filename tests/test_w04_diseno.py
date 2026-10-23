@@ -1,4 +1,3 @@
-
 """Pruebas W04: documentos del diseño ER."""
 
 from pathlib import Path

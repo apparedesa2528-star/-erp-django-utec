@@ -1,4 +1,3 @@
-
 # Diagrama Entidad-Relación — ERP Django
 ## Espiral 2
 ## Aprobación: pendiente de revisión del asesor
@@ -105,5 +104,5 @@ erDiagram
 
 | Rol | Nombre | Fecha | Observaciones |
 |---|---|---|---|
-| Desarrollador | Ana Paulina Paredes Alvarado | | |
+| Desarrollador | Braulio Emiliano H.P | | |
 | Asesor (PO) | MC. Román Fernando López González | | |

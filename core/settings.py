@@ -15,13 +15,18 @@ ALLOWED_HOSTS =[]
 # ── Apps instaladas ───────────────────────────────────────────────────────
 INSTALLED_APPS = [
     'jazzmin',
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     # Terceros
+    'allauth',
+    'allauth.account', 
+    'allauth.socialaccount',
     'rest_framework',
     'whitenoise.runserver_nostatic',
     # Apps del ERP
@@ -42,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -207,3 +213,25 @@ JAZZMIN_UI_TWEAKS = {
         'success':   'btn-success',
     },
 }
+# ── DJANGO SITES (requerido por allauth) ──────────────────────────────────
+SITE_ID = 1
+
+# ── AUTHENTICATION BACKENDS ───────────────────────────────────────────────
+AUTHENTICATION_BACKENDS = [
+    # Backend estándar de Django (username + password en admin)
+    'django.contrib.auth.backends.ModelBackend',
+    # Backend de allauth (permite login por email también)
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# ── ALLAUTH: configuración para desarrollo académico ──────────────────────
+ACCOUNT_LOGIN_METHODS          = {'username'}   # login por username
+ACCOUNT_EMAIL_REQUIRED         = False          # no obligar correo
+ACCOUNT_EMAIL_VERIFICATION     = 'none'         # no enviar email de verificación
+ACCOUNT_LOGOUT_ON_GET          = True           # logout sin confirmar (dev)
+ACCOUNT_SESSION_REMEMBER       = True           # recordar sesión
+
+# LOGIN_URL y LOGIN_REDIRECT_URL ya definidos en W01:
+# LOGIN_URL           = '/accounts/login/'
+# LOGIN_REDIRECT_URL  = '/productos/'
+LOGOUT_REDIRECT_URL = '/'

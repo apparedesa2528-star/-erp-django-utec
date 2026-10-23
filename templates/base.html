@@ -1,243 +1,313 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0A2342">
     <title>{% block title %}ERP Django{% endblock %} · UTEC Celaya</title>
-
-    <!-- Google Fonts: Playfair Display + Inter + JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Fable 5 AzulERP — Design System -->
     <style>
-        /* TOKENS MODO DÍA */
-        :root, [data-theme="light"] {
-            --clr-navy   : #0A2342;
-            --clr-royal  : #1B4F8A;
-            --clr-sky    : #4A90D9;
-            --clr-ice    : #E8F0FB;
-            --clr-gold   : #B8860B;
-            --clr-amber  : #D4A017;
-            --clr-cream  : #FDF8E8;
-            --clr-bg     : #F5F7FA;
-            --clr-surface: #FFFFFF;
-            --clr-text   : #1A1A2E;
-            --clr-muted  : #5A6A7E;
-            --clr-border : #C8D8EC;
-            --clr-danger : #C0392B;
-            --clr-ok     : #1A7A4A;
-            --shadow-sm  : 0 1px 4px rgba(10,35,66,.08);
-            --shadow-md  : 0 4px 16px rgba(10,35,66,.12);
+        /* ==========================================================================
+           REINICIO Y FONDO GENERAL (TEMA VERDE OSCURO / ESMERALDA PROFUNDO)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        /* TOKENS MODO NOCHE */
-        [data-theme="dark"] {
-            --clr-navy   : #1E3A5F;
-            --clr-royal  : #2E5F9E;
-            --clr-sky    : #6BAEE8;
-            --clr-ice    : #1A2A3A;
-            --clr-gold   : #D4AF37;
-            --clr-amber  : #E8C547;
-            --clr-cream  : #2A2510;
-            --clr-bg     : #0D1B2A;
-            --clr-surface: #142033;
-            --clr-text   : #E2EAF4;
-            --clr-muted  : #8AA0B8;
-            --clr-border : #2A3F58;
-            --clr-danger : #E74C3C;
-            --clr-ok     : #2ECC71;
-            --shadow-sm  : 0 1px 4px rgba(0,0,0,.3);
-            --shadow-md  : 0 4px 16px rgba(0,0,0,.4);
-        }
-        /* BASE */
-        *, *::before, *::after { box-sizing: border-box; }
+
         body {
-            font-family: 'Inter','Segoe UI',sans-serif;
-            font-size: 15px;
-            background: var(--clr-bg);
-            color: var(--clr-text);
-            line-height: 1.6;
-            transition: background .25s, color .25s;
+            background-color: #0a140e; /* Verde oscuro profundo como en tu foto */
+            color: #d1ded4;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           NAVBAR SUPERIOR (UNA SOLA LÍNEA RECTA, NADA FLOTANTE)
+           ========================================================================== */
+        .top-navbar {
+            background-color: #0e1a12;
+            border-bottom: 1px solid #1a3322;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .brand-logo {
+            background-color: #122216;
+            border: 1px solid #1a3322;
+            border-radius: 9999px;
+            padding: 0.45rem 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .brand-logo span.django-text {
+            color: #10b981; /* Verde brillante Django */
+        }
+
+        .nav-links-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: nowrap;
+        }
+
+        .nav-pill-btn {
+            background-color: #122216;
+            border: 1px solid #1a3322;
+            color: #8da493 !important;
+            padding: 0.45rem 0.95rem;
+            border-radius: 9999px;
+            text-decoration: none !important;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .nav-pill-btn:hover {
+            background-color: #1b3321;
+            color: #ffffff !important;
+            border-color: #274d32;
+        }
+
+        .nav-pill-btn.active {
+            background-color: rgba(16, 185, 129, 0.15);
+            border-color: #10b981;
+            color: #10b981 !important;
+        }
+
+        /* Botón dinámico Entrar / Salir */
+        .btn-auth-login {
+            border-color: #10b981 !important;
+            color: #10b981 !important;
+            font-weight: 600;
+        }
+
+        .btn-auth-logout {
+            border-color: #3b82f6 !important;
+            color: #60a5fa !important;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           CONTENEDOR PRINCIPAL Y ENCABEZADOS
+           ========================================================================== */
+        .main-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
             margin: 0;
         }
-        /* NAVBAR */
-        .erp-navbar {
-            background: var(--clr-navy);
-            border-bottom: 3px solid var(--clr-gold);
-            padding: .65rem 1.5rem;
-            display: flex; align-items: center;
-            justify-content: space-between; flex-wrap: wrap; gap: .5rem;
-            box-shadow: var(--shadow-md);
+
+        /* ==========================================================================
+           TABLAS CON FORMATO VERDE OSCURO (BORDES Y ESPACIADO)
+           ========================================================================== */
+        table, .erp-table, .table {
+            width: 100%;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            background-color: #0f1c13 !important;
+            border: 1px solid #1a3322 !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            color: #d1ded4 !important;
         }
-        .erp-brand {
-            font-family: 'Playfair Display',Georgia,serif;
-            font-size: 1.3rem; font-weight: 700;
-            color: var(--clr-gold) !important;
-            text-decoration: none; letter-spacing: .04em;
+
+        table thead th, .erp-table thead th, .table thead th {
+            background-color: #0c1710 !important;
+            color: #8da493 !important;
+            font-size: 0.8rem !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            padding: 1rem 1.2rem !important;
+            border-bottom: 1px solid #1a3322 !important;
+            border-top: none !important;
         }
-        .erp-brand span { color: rgba(255,255,255,.7); font-weight: 300; font-size: .85em; }
-        .erp-nav-links { display: flex; align-items: center; gap: .25rem; flex-wrap: wrap; }
-        .erp-nav-link {
-            color: rgba(255,255,255,.82) !important;
-            font-size: .88rem; font-weight: 500;
-            padding: .35rem .75rem; border-radius: 6px;
+
+        table tbody td, .erp-table tbody td, .table tbody td {
+            background-color: #0f1c13 !important;
+            padding: 1rem 1.2rem !important;
+            color: #d1ded4 !important;
+            font-size: 0.92rem !important;
+            border-bottom: 1px solid #16291a !important;
+            border-top: none !important;
+            vertical-align: middle !important;
+        }
+
+        table tbody tr:last-child td, .erp-table tbody tr:last-child td, .table tbody tr:last-child td {
+            border-bottom: none !important;
+        }
+
+        table tbody tr:hover td, .erp-table tbody tr:hover td, .table tbody tr:hover td {
+            background-color: rgba(16, 185, 129, 0.04) !important;
+        }
+
+        /* ==========================================================================
+           BOTONES: + NUEVO, EDITAR Y ELIMINAR
+           ========================================================================== */
+        .btn-create-green, .btn-erp-gold {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 0.55rem 1.2rem !important;
+            font-weight: 600 !important;
+            font-size: 0.92rem !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 0.4rem !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+            transition: background 0.2s;
+        }
+
+        .btn-create-green:hover, .btn-erp-gold:hover {
+            background-color: #059669 !important;
+        }
+
+        .btn-action-edit, .btn-erp-primary {
+            background-color: rgba(6, 182, 212, 0.12) !important;
+            border: 1px solid #0891b2 !important;
+            color: #22d3ee !important;
+            border-radius: 6px !important;
+            padding: 0.35rem 0.75rem !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 0.3rem !important;
+            margin-right: 0.4rem !important;
+        }
+
+        .btn-action-delete, .btn-erp-danger {
+            background-color: rgba(239, 68, 68, 0.12) !important;
+            border: 1px solid #dc2626 !important;
+            color: #f87171 !important;
+            border-radius: 6px !important;
+            padding: 0.35rem 0.75rem !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 0.3rem !important;
+        }
+
+        /* PAGINACIÓN */
+        .pagination-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1.5rem;
+        }
+
+        .page-pill {
+            background-color: #122216;
+            border: 1px solid #1a3322;
+            color: #8da493;
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
             text-decoration: none;
-            transition: background .2s, color .2s;
+            font-size: 0.85rem;
         }
-        .erp-nav-link:hover, .erp-nav-link.active {
-            background: var(--clr-royal); color: #FFF !important;
-        }
-        .theme-toggle {
-            background: var(--clr-gold); color: var(--clr-navy);
-            border: none; border-radius: 50%;
-            width: 32px; height: 32px; font-size: .9rem;
-            cursor: pointer; transition: transform .2s;
-        }
-        .theme-toggle:hover { transform: rotate(20deg); }
-        /* CONTENIDO */
-        .erp-main { padding: 2rem 0; min-height: calc(100vh - 110px); }
-        /* CARDS */
-        .erp-card {
-            background: var(--clr-surface);
-            border: 1px solid var(--clr-border);
-            border-radius: 12px; box-shadow: var(--shadow-sm);
-            padding: 1.5rem; margin-bottom: 1.5rem;
-            transition: box-shadow .2s;
-        }
-        .erp-card:hover { box-shadow: var(--shadow-md); }
-        .erp-card-header {
-            background: var(--clr-navy); color: #FFF;
-            border-radius: 10px 10px 0 0;
-            padding: .85rem 1.25rem;
-            border-left: 5px solid var(--clr-gold);
-            font-family: 'Playfair Display',serif;
-            font-size: 1.05rem; letter-spacing: .03em;
-            margin: -1.5rem -1.5rem 1.5rem;
-        }
-        /* ALERTAS */
-        .erp-alert-danger {
-            background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.3);
-            border-left: 5px solid var(--clr-danger); border-radius: 8px;
-            padding: 1rem 1.25rem;
-        }
-        .erp-alert-info {
-            background: var(--clr-ice); border: 1px solid var(--clr-border);
-            border-left: 5px solid var(--clr-sky); border-radius: 8px;
-            padding: 1rem 1.25rem;
-        }
-        .erp-alert-success {
-            background: rgba(26,122,74,.08); border: 1px solid rgba(26,122,74,.3);
-            border-left: 5px solid var(--clr-ok); border-radius: 8px;
-            padding: 1rem 1.25rem;
-        }
-        /* BADGES */
-        .badge-erp-gold {
-            background: var(--clr-cream); color: var(--clr-gold);
-            border: 1px solid var(--clr-gold);
-            font-size: .75rem; padding: .2rem .7rem;
-            border-radius: 20px; font-weight: 700;
-        }
-        /* BOTONES */
-        .btn-erp-primary {
-            background: var(--clr-navy); color: #FFF;
-            border: 2px solid var(--clr-gold); border-radius: 8px;
-            padding: .45rem 1.2rem; font-weight: 600; font-size: .88rem;
-            cursor: pointer; text-decoration: none; display: inline-block;
-            transition: background .2s, color .2s;
-        }
-        .btn-erp-primary:hover { background: var(--clr-gold); color: var(--clr-navy); }
-        /* TÍTULO DE PÁGINA */
-        .erp-page-title {
-            display: flex; align-items: center; gap: 1rem;
-            margin-bottom: 1.5rem; padding-bottom: .75rem;
-            border-bottom: 2px solid var(--clr-border);
-        }
-        .erp-page-title h2 {
-            font-family: 'Playfair Display',serif;
-            font-size: 1.6rem; color: var(--clr-navy); margin: 0;
-        }
-        [data-theme="dark"] .erp-page-title h2 { color: var(--clr-sky); }
-        /* FOOTER */
-        .erp-footer {
-            background: var(--clr-navy); color: rgba(255,255,255,.6);
-            text-align: center; font-size: .78rem;
-            padding: .75rem; border-top: 2px solid var(--clr-gold);
+
+        .page-pill.active {
+            background-color: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+            font-weight: bold;
         }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-<!-- NAVBAR -->
-<nav class="erp-navbar">
-    <a class="erp-brand" href="/">📦 ERP Django <span>· UTEC Celaya</span></a>
-    <div class="erp-nav-links">
-        <a href="{% url 'productos:inicio' %}" class="erp-nav-link {% block nav_productos %}{% endblock %}">Productos</a>
-        <a href="{% url 'clientes:inicio' %}" class="erp-nav-link {% block nav_clientes %}{% endblock %}">Clientes</a>
-        <a href="{% url 'proveedores:inicio' %}" class="erp-nav-link {% block nav_proveedores %}{% endblock %}">Proveedores</a>
-        <a href="{% url 'ventas:inicio' %}" class="erp-nav-link {% block nav_ventas %}{% endblock %}">Ventas</a>
-        <a href="{% url 'reportes:inicio' %}" class="erp-nav-link {% block nav_reportes %}{% endblock %}">Reportes</a>
-        <a href="/admin/" class="erp-nav-link">Admin</a>
-        {% if user.is_authenticated %}
-            <a href="/accounts/logout/" class="erp-nav-link">Salir ({{ user.username }})</a>
-        {% else %}
-            <a href="/accounts/login/" class="erp-nav-link">Entrar</a>
-        {% endif %}
-        <button class="theme-toggle" id="themeBtn" title="Modo claro/oscuro">🌙</button>
-    </div>
-</nav>
 
-<!-- MENSAJES FLASH -->
-{% if messages %}
-<div class="container mt-3">
-    {% for m in messages %}
-    <div class="erp-alert-{% if m.tags == 'error' %}danger{% elif m.tags == 'success' %}success{% else %}info{% endif %} d-flex justify-content-between align-items-center mb-2" role="alert">
-        <span>{{ m }}</span>
-        <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:inherit;">×</button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+    <!-- NAVBAR SUPERIOR EN UNA SOLA LÍNEA RECTA -->
+    <header class="top-navbar">
+        <!-- Logo a la izquierda -->
+        <a href="/" class="brand-logo">
+            📦 ERP <span class="django-text">Django</span>
+        </a>
 
-<!-- CONTENIDO PRINCIPAL -->
-<main class="erp-main">
-    <div class="container">
+        <!-- Botones en línea recta a la derecha -->
+        <nav class="nav-links-row">
+            <a href="/productos/" class="nav-pill-btn {% block nav_productos %}{% endblock %}">📦 Productos</a>
+            <a href="/clientes/" class="nav-pill-btn {% block nav_clientes %}{% endblock %}">👥 Clientes</a>
+            <a href="/proveedores/" class="nav-pill-btn {% block nav_proveedores %}{% endblock %}">🏢 Proveedores</a>
+            <a href="/ventas/" class="nav-pill-btn {% block nav_ventas %}{% endblock %}">💰 Ventas</a>
+            <a href="/reportes/" class="nav-pill-btn {% block nav_reportes %}{% endblock %}">📊 Reportes</a>
+            <a href="/admin/" class="nav-pill-btn">⚙ Admin</a>
+
+            <!-- BOTÓN DINÁMICO ENTRAR / SALIR -->
+            {% if user.is_authenticated %}
+                <a href="/accounts/logout/" class="nav-pill-btn btn-auth-logout">
+                    🚪 Salir ({{ user.username }})
+                </a>
+            {% else %}
+                <a href="/accounts/login/" class="nav-pill-btn btn-auth-login">
+                    🔑 Entrar
+                </a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- MENSAJES FLASH -->
+    {% if messages %}
+    <div style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1.5rem;">
+        {% for m in messages %}
+        <div class="alert alert-{% if m.tags == 'error' %}danger{% elif m.tags == 'success' %}success{% else %}info{% endif %} d-flex justify-content-between align-items-center mb-2" role="alert">
+            <span>{{ m }}</span>
+            <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:inherit;">×</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
         {% block content %}{% endblock %}
-    </div>
-</main>
+    </main>
 
-<!-- FOOTER -->
-<footer class="erp-footer">
-    ERP Django · Django 4.2 LTS · Fable 5 AzulERP · UTEC Celaya · Espiral 1
-</footer>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Toggle modo noche -->
-<script>
-(function () {
-    var btn  = document.getElementById('themeBtn');
-    var html = document.documentElement;
-    var icons = { light: '🌙', dark: '☀️' };
-    var saved = localStorage.getItem('erpTheme') || 'light';
-    html.setAttribute('data-theme', saved);
-    if (btn) btn.textContent = icons[saved];
-    if (btn) {
-        btn.addEventListener('click', function () {
-            var current = html.getAttribute('data-theme');
-            var next    = current === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', next);
-            btn.textContent = icons[next];
-            localStorage.setItem('erpTheme', next);
-        });
-    }
-})();
-</script>
-{% block extra_js %}{% endblock %}
 </body>
 </html>

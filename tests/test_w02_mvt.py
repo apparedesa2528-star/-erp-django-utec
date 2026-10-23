@@ -23,46 +23,46 @@ class TemplatesRenderTest(TestCase):
 
     def test_productos_usa_template_correcto(self):
         response = self.client.get(
-            reverse("productos:inicio")
+            reverse("productos:lista")
         )
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
-            "productos/index.html",
+            "productos/lista.html",
         )
 
     def test_clientes_usa_template_correcto(self):
         response = self.client.get(
-            reverse("clientes:inicio")
+            reverse("clientes:lista")
         )
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
-            "clientes/index.html",
+            "clientes/lista.html",
         )
 
     def test_proveedores_usa_template_correcto(self):
         response = self.client.get(
-            reverse("proveedores:inicio")
+            reverse("proveedores:lista")
         )
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
-            "proveedores/index.html",
+            "proveedores/lista.html",
         )
 
     def test_ventas_usa_template_correcto(self):
         response = self.client.get(
-            reverse("ventas:inicio")
+            reverse("ventas:lista")
         )
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
-            "ventas/index.html",
+            "ventas/lista.html",
         )
 
     def test_reportes_usa_template_correcto(self):
