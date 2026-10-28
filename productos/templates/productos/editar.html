@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% block title %}Editar - {{ producto.nombre }}{% endblock %}
+
+{% block nav_productos %}active{% endblock %}
+
+{% block content %}
+
+<div class="erp-page-title">
+    <h2>📝 Editar: {{ producto.nombre }}</h2>
+</div>
+
+<div class="erp-card" style="max-width: 640px;">
+    <div class="erp-card-header">
+        Modificar datos
+    </div>
+
+    <form method="post"
+          enctype="multipart/form-data"
+          style="margin-top: 1.5rem;">
+
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="mb-4">
+                <label class="erp-label">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% if field.errors %}
+                    {% for e in field.errors %}
+                        <p style="color: var(--bs-danger); font-size: .82rem; margin: .25rem 0 0;">
+                            {{ e }}
+                        </p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    <div>
+    <a href="{% url 'productos:lista' %}" class="btn-erp-primary">
+        Cancelar
+    </a>
+</div>
+
+{% endblock %}
