@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Clientes{% endblock %}
+
+{% block nav_clientes %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header-row">
+    <h1 class="page-title">👥 Clientes</h1>
+
+    <span>{{ page_obj.paginator.count|default:clientes.count }} cliente(s)</span>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'clientes:crear' %}" class="btn-create-green">
+            ➕ Nuevo Cliente
+        </a>
+    {% endif %}
+</div>
+
+{% if clientes %}
+    <div class="table-responsive">
+        <table class="table erp-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for c in clientes %}
+                    <tr>
+                        <td>{{ c.pk }}</td>
+                        <td>{{ c.nombre }}</td>
+                        <td>{{ c.correo }}</td>
+                        <td>{{ c.telefono|default:"—" }}</td>
+
+                        <td>
+                            {% if c.activo %}
+                                <span class="badge bg-success">Activo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'clientes:editar' c.pk %}"
+                                   class="btn-action-edit">
+                                    📝 Editar
+                                </a>
+
+                                <a href="{% url 'clientes:eliminar' c.pk %}"
+                                   class="btn-action-delete">
+                                    🗑️ Eliminar
+                                </a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    <div class="alert alert-secondary">
+        No hay clientes registrados aún.
+    </div>
+{% endif %}
+
+{% if is_paginated %}
+    <nav class="pagination-bar" aria-label="Paginación de clientes">
+
+        {% if page_obj.has_previous %}
+            <a class="page-pill"
+               href="?page={{ page_obj.previous_page_number }}">
+                ‹
+            </a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="page-pill active">{{ num }}</span>
+            {% else %}
+                <a class="page-pill" href="?page={{ num }}">
+                    {{ num }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="page-pill"
+               href="?page={{ page_obj.next_page_number }}">
+                ›
+            </a>
+        {% endif %}
+
+    </nav>
+{% endif %}
+
+{% endblock %}

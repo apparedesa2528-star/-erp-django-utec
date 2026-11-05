@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Productos{% endblock %}
+
+{% block nav_productos %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header-row">
+    <h1 class="page-title">📦 Productos</h1>
+
+    <span>{{ page_obj.paginator.count|default:productos.count }} producto(s)</span>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'productos:crear' %}" class="btn-create-green">
+            ➕ Nuevo Producto
+        </a>
+    {% endif %}
+</div>
+
+{% if productos %}
+    <div class="table-responsive">
+        <table class="table erp-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Proveedor</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for p in productos %}
+                    <tr>
+                        <td>{{ p.pk }}</td>
+                        <td>{{ p.nombre }}</td>
+                        <td>{{ p.categoria|default:"—" }}</td>
+                        <td>{{ p.proveedor|default:"—" }}</td>
+                        <td>${{ p.precio }}</td>
+                        <td>{{ p.stock }}</td>
+
+                        <td>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'productos:editar' p.pk %}"
+                                   class="btn-action-edit">
+                                    📝 Editar
+                                </a>
+
+                                <a href="{% url 'productos:eliminar' p.pk %}"
+                                   class="btn-action-delete">
+                                    🗑️ Eliminar
+                                </a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    <div class="alert alert-secondary">
+        No hay productos registrados aún.
+    </div>
+{% endif %}
+
+{% if is_paginated %}
+    <nav class="pagination-bar" aria-label="Paginación de productos">
+
+        {% if page_obj.has_previous %}
+            <a class="page-pill"
+               href="?page={{ page_obj.previous_page_number }}">
+                ‹
+            </a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="page-pill active">{{ num }}</span>
+            {% else %}
+                <a class="page-pill" href="?page={{ num }}">
+                    {{ num }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="page-pill"
+               href="?page={{ page_obj.next_page_number }}">
+                ›
+            </a>
+        {% endif %}
+
+    </nav>
+{% endif %}
+
+{% endblock %}
