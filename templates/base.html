@@ -10,6 +10,22 @@
 
     <style>
         /* ==========================================================================
+           ESTILOS CORREGIDOS (Rectangulares y limpios)
+           ========================================================================== */
+        .erp-card {
+            background: var(--clr-surface, #1e293b);
+            border: 1px solid var(--clr-border, #334155);
+            border-radius: 12px !important; /* ← 12px para tarjeta rectangular, NUNCA 50% */
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow .2s;
+        }
+        .erp-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==========================================================================
            REINICIO Y FONDO GENERAL (TEMA VERDE OSCURO / ESMERALDA PROFUNDO)
            ========================================================================== */
         * {
@@ -19,14 +35,14 @@
         }
 
         body {
-            background-color: #0a140e; /* Verde oscuro profundo como en tu foto */
+            background-color: #0a140e;
             color: #d1ded4;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
         }
 
         /* ==========================================================================
-           NAVBAR SUPERIOR (UNA SOLA LÍNEA RECTA, NADA FLOTANTE)
+           NAVBAR SUPERIOR Y BOTONERÍA
            ========================================================================== */
         .top-navbar {
             background-color: #0e1a12;
@@ -54,7 +70,7 @@
         }
 
         .brand-logo span.django-text {
-            color: #10b981; /* Verde brillante Django */
+            color: #10b981;
         }
 
         .nav-links-row {
@@ -64,7 +80,7 @@
             flex-wrap: nowrap;
         }
 
-        .nav-pill-btn {
+        .nav-pill-btn, .erp-nav-link {
             background-color: #122216;
             border: 1px solid #1a3322;
             color: #8da493 !important;
@@ -80,19 +96,18 @@
             transition: all 0.2s ease;
         }
 
-        .nav-pill-btn:hover {
+        .nav-pill-btn:hover, .erp-nav-link:hover {
             background-color: #1b3321;
             color: #ffffff !important;
             border-color: #274d32;
         }
 
-        .nav-pill-btn.active {
+        .nav-pill-btn.active, .erp-nav-link.active {
             background-color: rgba(16, 185, 129, 0.15);
             border-color: #10b981;
             color: #10b981 !important;
         }
 
-        /* Botón dinámico Entrar / Salir */
         .btn-auth-login {
             border-color: #10b981 !important;
             color: #10b981 !important;
@@ -103,6 +118,20 @@
             border-color: #3b82f6 !important;
             color: #60a5fa !important;
             font-weight: 600;
+        }
+
+        /* Botón Modo Claro/Oscuro */
+        .theme-toggle {
+            background: #122216;
+            border: 1px solid #1a3322;
+            color: #ffffff;
+            padding: 0.45rem 0.75rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .theme-toggle:hover {
+            background: #1b3321;
         }
 
         /* ==========================================================================
@@ -259,50 +288,45 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-<!-- NAVBAR COMPLETA ERP -->
-<nav style="display: flex; justify-content: space-between; align-items: center; background-color: #122216; padding: 0.75rem 1.5rem; font-family: system-ui, -apple-system, sans-serif;">
 
-    <!-- LADO IZQUIERDO: Logo y Subtítulo -->
-    <div style="display: flex; flex-direction: column; justify-content: center;">
-        <a href="/" style="color: #FF9800; text-decoration: none; font-size: 1.25rem; font-weight: bold; line-height: 1.2;">
-            📦 ERP Django
-        </a>
-        <span style="color: #a0a0a0; font-size: 0.8rem; margin-top: 2px;">
-            Ana P.A· CBTis 198
-        </span>
-    </div>
+    <!-- NAVBAR OFICIAL RECTANGULAR -->
+    <nav class="erp-navbar top-navbar" style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; background: #16291a; border-bottom: 3px solid #1a3322;">
 
-    <!-- LADO DERECHO: Botones de navegación -->
-    <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: nowrap;">
-        <a href="/productos/" class="{% block nav_productos %}{% endblock %}" style="color: #ffffff; background-color: #446C24; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; border: 1px solid #3f3f5a;">📦 Productos</a>
-        <a href="/clientes/" class="{% block nav_clientes %}{% endblock %}" style="color: #ffffff; background-color: #446C24; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; border: 1px solid #3f3f5a;">👥 Clientes</a>
-        <a href="/proveedores/" class="{% block nav_proveedores %}{% endblock %}" style="color: #ffffff; background-color: #446C24; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; border: 1px solid #3f3f5a;">🏢 Proveedores</a>
-        <a href="/ventas/" class="{% block nav_ventas %}{% endblock %}" style="color: #ffffff; background-color: #446C24; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; border: 1px solid #3f3f5a;">💰 Ventas</a>
-        <a href="/reportes/" class="{% block nav_reportes %}{% endblock %}" style="color: #ffffff; background-color: #446C24; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; border: 1px solid #3f3f5a;">📊 Reportes</a>
-        <a href="{% url 'catalogo:catalogo' %}" class="{% block nav_catalogo %}{% endblock %}" style="color: #ffffff; background-color: #446C24; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; border: 1px solid #3f3f5a;">🛒 Tienda</a>
+        <!-- LADO IZQUIERDO: LOGO Y NOMBRE -->
+        <div style="display: flex; flex-direction: column;">
+            <a class="erp-brand" href="/" style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.35rem; font-weight: 700; color: #f59e0b !important; text-decoration: none;">
+                📦 ERP Django
+            </a>
+            <span style="color: rgba(255, 255, 255, 0.75); font-size: 0.8rem; margin-top: 2px;">
+                Ana P.A · CBTis 198
+            </span>
+        </div>
 
-        {% if carrito_total_items > 0 %}
-            <a href="{% url 'catalogo:carrito' %}" style="color: #ffffff; background-color: #27ae60; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; font-weight: bold;">🛍️ ({{ carrito_total_items }})</a>
-        {% endif %}
+        <!-- LADO DERECHO: BOTONES EN FILA DENTRO DEL MENU -->
+        <div class="erp-nav-links nav-links-row" style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: nowrap;">
+            <a href="/productos/" class="erp-nav-link {% block nav_productos %}{% endblock %}">📦 Productos</a>
+            <a href="/clientes/" class="erp-nav-link {% block nav_clientes %}{% endblock %}">👥 Clientes</a>
+            <a href="/proveedores/" class="erp-nav-link {% block nav_proveedores %}{% endblock %}">🏢 Proveedores</a>
+            <a href="/ventas/" class="erp-nav-link {% block nav_ventas %}{% endblock %}">💰 Ventas</a>
+            <a href="/reportes/" class="erp-nav-link {% block nav_reportes %}{% endblock %}">📊 Reportes</a>
+            <a href="{% url 'catalogo:catalogo' %}" class="erp-nav-link {% block nav_catalogo %}{% endblock %}">🛒 Tienda</a>
 
-        <a href="/admin/" target="_blank" style="color: #ffffff; background-color: #0c4e15; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; border: 1px solid #3f3f5a;">⚙ Admin</a>
-
-        {% if user.is_authenticated %}
-            <a href="/accounts/logout/" style="color: #ffffff; background-color: #03550d; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem;">Salir ({{ user.username }})</a>
-        {% else %}
-            <a href="/accounts/login/" style="color: #ffffff; background-color: #164b23; padding: 0.4rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem;">🔑 Entrar</a>
-        {% endif %}
-    </div>
-</nav>
-        
-            <!-- BOTÓN DINÁMICO ENTRAR / SALIR -->
-            {% if user.is_authenticated %}
-                <a href="/accounts/logout/" class="nav-pill-btn btn-auth-logout">
-                    🚪 Salir ({{ user.username }})
-                
+            {% if carrito_total_items > 0 %}
+                <a href="{% url 'catalogo:carrito' %}" class="erp-nav-link" style="color: #ffffff !important; background-color: #27ae60;">🛍️ ({{ carrito_total_items }})</a>
             {% endif %}
-        </nav>
-    </header>
+
+            <a href="/admin/" target="_blank" class="erp-nav-link">⚙️ Admin</a>
+
+            {% if user.is_authenticated %}
+                <a href="/accounts/logout/" class="erp-nav-link btn-auth-logout">Salir ({{ user.username }})</a>
+            {% else %}
+                <a href="/accounts/login/" class="erp-nav-link btn-auth-login">🔑 Entrar</a>
+            {% endif %}
+
+            <button class="theme-toggle" id="themeBtn" title="Modo claro/oscuro">🌙</button>
+        </div>
+
+    </nav>
 
     <!-- MENSAJES FLASH -->
     {% if messages %}
