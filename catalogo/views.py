@@ -246,6 +246,9 @@ def checkout(request):
     totales = calcular_totales(carrito)
 
     publishable_key = settings.STRIPE_PUBLISHABLE_KEY
+    print("CHECKOUT: vista ejecutada")
+    print("CHECKOUT: carrito =", carrito)
+    print("CHECKOUT: método =", request.method)
 
     if request.method == 'POST':
 
