@@ -16,6 +16,7 @@ from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from .validators import validar_imagen_producto
 
 from proveedores.models import Proveedor
 
@@ -84,6 +85,16 @@ class Producto(models.Model):
     )
     activo    = models.BooleanField(
         default=True, verbose_name='Activo'
+    )
+    # En la clase Producto — agregar campo imagen:
+
+    imagen = models.ImageField(
+        upload_to='productos/',
+        null=True,
+        blank=True,
+        verbose_name='Imagen del producto',
+        help_text='Formatos: JPEG, PNG, WEBP. Máximo 5 MB.',
+        validators=[validar_imagen_producto],   # ← agregar
     )
     creado    = models.DateTimeField(
         auto_now_add=True, verbose_name='Fecha de registro'
@@ -158,7 +169,13 @@ class Producto(models.Model):
         default=True,
         verbose_name="Activo",
     )
-
+    imagen    = models.ImageField(          # ← nuevo campo W11
+        upload_to='productos/',
+        null=True,
+        blank=True,
+        verbose_name='Imagen del producto',
+        help_text='Formatos permitidos: JPEG, PNG, WEBP. Máximo 5 MB.'
+    )
     creado = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Fecha de registro",

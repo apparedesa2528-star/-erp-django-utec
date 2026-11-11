@@ -23,4 +23,5 @@ urlpatterns = [
     path('<int:producto_id>/eliminar/',
          views.ProductoDeleteView.as_view(),
          name='eliminar'),
+     path('exportar-excel/', views.exportar_productos_excel, name='exportar_excel'),
 ]

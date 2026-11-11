@@ -176,13 +176,23 @@ class Pedido(models.Model):
         null=True, blank=True, verbose_name='Fecha de entrega'
     )
     total_pagado  = models.DecimalField(
+        
 
         max_digits=10, decimal_places=2,
         null=True, blank=True,
         verbose_name='Total pagado'
     )
-
-
+    items_snapshot = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name='Snapshot de items del carrito',
+        help_text=(
+            'Copia del carrito al momento de crear el pedido. '
+            'Estructura: [{"producto_id": 1, "nombre": "...", '
+            '"cantidad": 2, "precio": "500.00"}]'
+        )
+    )
+  
     max_digits=10,
     decimal_places=2,
     null=True,

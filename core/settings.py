@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'allauth.account', 
     'allauth.socialaccount',
     'rest_framework',
+    'django_filters',
+    'rest_framework.authtoken',
     'whitenoise.runserver_nostatic',
     # Apps del ERP
     'clientes',
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     'ventas',
     'reportes',
     'configuracion',
+    'catalogo',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'catalogo.context_processors.carrito_info',
             ],
         },
     },
@@ -109,14 +113,23 @@ LOGOUT_REDIRECT_URL = '/'
 
 # ── DRF ──────────────────────────────────────────────────────────────────
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',   # para el navegador
+        'rest_framework.authentication.TokenAuthentication',     # para clientes externos
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # core/settings.py — agregar al final del archivo
-
+# ── STRIPE (Pasarela de pago) ──────────────────────────────────────────────
+STRIPE_SECRET_KEY     = env('STRIPE_SECRET_KEY',     default='sk_test_placeholder')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY', default='pk_test_placeholder')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', default='whsec_placeholder')
 # ── JAZZMIN — Personalización del admin con Fable 5 AzulERP ───────────────
 JAZZMIN_SETTINGS = {
     # Identidad

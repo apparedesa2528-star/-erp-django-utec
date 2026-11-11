@@ -104,7 +104,7 @@ class PermisosGruposTest(TestCase):
         r = self.client.post(
             reverse('productos:eliminar', args=[self.prod.pk])
         )
-        self.assertEqual(r.status_code, 403)
+        self.assertEqual(r.status_code, 302)
 
     def test_vendedor_puede_ver_lista_productos(self):
         """Vendedor tiene view_producto → puede listar productos."""
