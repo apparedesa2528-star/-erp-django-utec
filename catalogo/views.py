@@ -17,6 +17,8 @@ Estructura del carrito en sesión:
 """
 # catalogo/views.py — agregar imports al inicio:
 import stripe  
+import stripe.apps 
+stripe.apps = stripe.apps
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
