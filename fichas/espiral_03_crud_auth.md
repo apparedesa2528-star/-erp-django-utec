@@ -6,8 +6,8 @@
 | **Número de espiral** | 3 |
 | **Nombre del ciclo** | CRUD Web y Autenticación |
 | **Semanas** | W07 – W09 |
-| **Fecha de inicio** | 21/10/2026 |
-| **Fecha de cierre** | 21/10/2026 |
+| **Fecha de inicio** | ___/___/_____ |
+| **Fecha de cierre** | ___/___/_____ |
 | **Responsable** | [Nombre del estudiante] |
 | **Asesor** | MC. Román Fernando López González |
 

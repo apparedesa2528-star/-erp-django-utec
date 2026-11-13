@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Mi carrito{% endblock %}
 
+
 {% block content %}
 <div class="erp-page-title">
     <h2>🛍️ Mi carrito</h2>
     <a href="{% url 'catalogo:catalogo' %}"
        class="btn-erp-primary ms-auto">← Seguir comprando</a>
 </div>
+
 
 {% if items %}
 <div class="erp-card">
@@ -79,6 +81,7 @@
     </table>
 </div>
 
+
 <!-- Acciones del carrito -->
 <div class="d-flex gap-2 mt-3 flex-wrap">
     <!-- Vaciar carrito -->
@@ -89,6 +92,7 @@
             🗑️ Vaciar carrito
         </button>
     </form>
+
 
     <!-- Proceder al checkout — W14 lo implementará -->
     {% if user.is_authenticated %}
@@ -103,6 +107,7 @@
     </a>
     {% endif %}
 </div>
+
 
 {% else %}
 <div class="erp-card" style="text-align:center;padding:3rem;">

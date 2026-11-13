@@ -10,4 +10,5 @@ urlpatterns = [
     path('nuevo/',                      views.ProveedorCreateView.as_view(), name='crear'),
     path('<int:proveedor_id>/editar/',  views.ProveedorUpdateView.as_view(), name='editar'),
     path('<int:proveedor_id>/eliminar/',views.ProveedorDeleteView.as_view(), name='eliminar'),
+    path('',                            views.ProveedorListView.as_view(),     name='inicio')
 ]

@@ -10,4 +10,5 @@ urlpatterns = [
     path('nuevo/',                    views.ClienteCreateView.as_view(), name='crear'),
     path('<int:cliente_id>/editar/',  views.ClienteUpdateView.as_view(), name='editar'),
     path('<int:cliente_id>/eliminar/',views.ClienteDeleteView.as_view(), name='eliminar'),
+    path('',                          views.ClienteListView.as_view(),   name='inicio')
 ]

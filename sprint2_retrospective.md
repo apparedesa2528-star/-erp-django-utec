@@ -1,7 +1,7 @@
 # Sprint 2 Retrospective — ERP Django
 ## Semanas W07–W09 · Espiral 3: CRUD Web y Autenticación
 
-**Fecha:** 21/10/26
+**Fecha:** ___/___/_____
 
 ## ¿Qué funcionó bien? (Keep)
 1. select_related() en W07 evitó queries N+1 desde el inicio.

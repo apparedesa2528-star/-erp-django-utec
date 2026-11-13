@@ -20,7 +20,7 @@ protegidos por autenticación y 3 roles de acceso.
 | HU-E3-06 | Como vendedor, quiero registrar nuevas ventas con detalles | ✅ | W08 |
 | HU-E3-07 | Como admin, quiero eliminar registros con confirmación | ✅ | W08 |
 | HU-E3-08 | Como dev, quiero autenticación login/logout funcional | ✅ | W09 |
-| HU-E3-09 | Como gerente, quiero 3 roles con permisos diferenciados |  ✅| W09 |
+| HU-E3-09 | Como gerente, quiero 3 roles con permisos diferenciados | ✅ | W09 |
 
 **Total Sprint 2:** 27 puntos
 
@@ -30,15 +30,3 @@ protegidos por autenticación y 3 roles de acceso.
 - Formularios de escritura requieren login (redirigen a `/accounts/login/`)
 - 3 grupos Django (Gerente, Vendedor, Almacén) con permisos asignados
 - python manage.py test tests → ≥ 78 tests OK
-## Sprint 2 — Estado final W09
-
-| HU | Estado | Pts |
-|---|---|---|
-| HU-E3-01 a HU-E3-09 | ✅ Completadas | 27/27 |
-
-## Hito M3 — ALCANZADO ✅
-- CRUD: 4 módulos con lectura + escritura funcional
-- Auth: allauth con login/logout Fable 5
-- RBAC: 3 grupos (Gerente/Vendedor/Almacén) con permisos
-- Tests: Ran 100 tests → OK
-- Fecha: 21/10/2026

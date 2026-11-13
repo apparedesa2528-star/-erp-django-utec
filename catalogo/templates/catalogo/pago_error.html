@@ -1,16 +1,21 @@
+
 {% extends "base.html" %}
 {% block title %}Error en el pago{% endblock %}
 
 {% block content %}
 <div style="display:flex;justify-content:center;align-items:center;
             min-height:60vh;">
-    <div class="erp-card" style="max-width:480px;text-align:center;">
+    <div class="erp-card" style="max-width:480px;text-align:center;
+                                  background:#14231A;
+                                  border:1px solid #35483A;">
         <div style="font-size:4rem;margin-bottom:1rem;">❌</div>
+
         <h2 style="font-family:'Playfair Display',serif;
                    color:var(--clr-danger);margin:0 0 .5rem;">
             Error en el pago
         </h2>
-        <p style="color:var(--clr-muted);margin-bottom:1.5rem;">
+
+        <p style="color:#A8B5AA;margin-bottom:1.5rem;">
             No pudimos procesar tu pago. Tu carrito sigue intacto —
             puedes intentarlo de nuevo.
         </p>
@@ -18,7 +23,8 @@
         <div class="erp-alert-danger" style="margin-bottom:1.5rem;
                                              text-align:left;">
             <strong>Posibles causas:</strong>
-            <ul style="margin:.5rem 0 0;padding-left:1.2rem;font-size:.9rem;">
+            <ul style="margin:.5rem 0 0;padding-left:1.2rem;
+                       font-size:.9rem;">
                 <li>Fondos insuficientes en la tarjeta</li>
                 <li>Datos de tarjeta incorrectos</li>
                 <li>Tarjeta bloqueada por el banco</li>
@@ -31,6 +37,7 @@
                class="btn-erp-primary">
                 ← Volver al carrito
             </a>
+
             <a href="{% url 'catalogo:checkout' %}"
                class="btn-erp-gold">
                 Reintentar pago
