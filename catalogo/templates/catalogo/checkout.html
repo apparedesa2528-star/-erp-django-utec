@@ -1,0 +1,246 @@
+
+{% extends "base.html" %}
+{% block title %}Checkout · Proceso de pago{% endblock %}
+
+{% block extra_css %}
+<style>
+    #card-element {
+        background: var(--clr-surface);
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+        padding: .75rem 1rem;
+        transition: border-color .2s;
+    }
+
+    #card-element.StripeElement--focus {
+        border-color: var(--clr-sky);
+        box-shadow: 0 0 0 3px rgba(181,255,101,.18);
+    }
+
+    #card-element.StripeElement--invalid {
+        border-color: var(--clr-danger);
+    }
+
+    #card-errors {
+        color: var(--clr-danger);
+        font-size: .85rem;
+        margin-top: .4rem;
+        min-height: 1.2rem;
+    }
+
+    #submit-btn:disabled {
+        opacity: .7;
+        cursor: not-allowed;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="erp-page-title">
+    <h2>💳 Proceso de pago</h2>
+    <a href="{% url 'catalogo:carrito' %}"
+       class="btn-erp-primary ms-auto">← Volver al carrito</a>
+</div>
+
+<div class="row g-4">
+
+    <!-- Resumen del pedido -->
+    <div class="col-md-5">
+        <div class="erp-card">
+            <div class="erp-card-header">🛍️ Resumen de tu pedido</div>
+
+            <table style="width:100%;border-collapse:collapse;margin-top:.5rem;">
+                {% for prod_id, datos in carrito.items %}
+                <tr>
+                    <td style="padding:.4rem 0;font-size:.9rem;">
+                        {{ datos.nombre }}
+                        <span style="color:var(--clr-muted);font-size:.82rem;">
+                            × {{ datos.cantidad }}
+                        </span>
+                    </td>
+                    <td style="text-align:right;font-weight:600;font-size:.9rem;padding:.4rem 0;">
+                        ${{ datos.precio }}
+                    </td>
+                </tr>
+                {% endfor %}
+
+                <tr style="border-top:1px solid var(--clr-border);">
+                    <td style="padding:.5rem 0;color:var(--clr-muted);font-size:.88rem;">
+                        Subtotal
+                    </td>
+                    <td style="text-align:right;color:var(--clr-muted);font-size:.88rem;">
+                        ${{ totales.subtotal }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:.3rem 0;color:var(--clr-muted);font-size:.88rem;">
+                        IVA ({{ totales.iva_pct }}%)
+                    </td>
+                    <td style="text-align:right;color:var(--clr-muted);font-size:.88rem;">
+                        ${{ totales.iva_monto }}
+                    </td>
+                </tr>
+
+                <tr style="border-top:2px solid var(--clr-gold);">
+                    <td style="padding:.6rem 0;font-weight:700;font-size:1rem;">
+                        TOTAL
+                    </td>
+                    <td style="text-align:right;font-weight:700;font-size:1.2rem;color:var(--clr-gold);">
+                        ${{ totales.total }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        {% if pedido %}
+        <div class="erp-alert-info" style="margin-top:1rem;">
+            <strong>Pedido creado:</strong> {{ pedido.numero_pedido }}<br>
+            <small style="color:var(--clr-muted);">
+                Completa el pago para confirmar tu pedido.
+            </small>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Formulario de pago -->
+    <div class="col-md-7">
+        <div class="erp-card">
+            <div class="erp-card-header">🔒 Datos de pago</div>
+
+            {% if client_secret %}
+            <p style="color:var(--clr-muted);font-size:.85rem;margin-bottom:1rem;">
+                Tus datos de pago son procesados de forma segura por Stripe.
+                Nunca pasan por nuestros servidores.
+            </p>
+
+            <div class="mb-4">
+                <label class="erp-label">Número de tarjeta</label>
+                <div id="card-element"></div>
+                <div id="card-errors" role="alert"></div>
+            </div>
+
+            <button id="submit-btn" class="btn-erp-gold"
+                    style="width:100%;padding:.6rem;font-size:1rem;">
+                🔐 Confirmar pago de ${{ totales.total }}
+            </button>
+
+            <p style="text-align:center;margin-top:.75rem;color:var(--clr-muted);font-size:.78rem;">
+                Tarjeta de prueba: <code>4242 4242 4242 4242</code>
+                · cualquier fecha futura · cualquier CVC
+            </p>
+
+            {% else %}
+            <p style="margin-bottom:1.5rem;color:var(--clr-muted);">
+                Haz clic en "Proceder al pago" para generar tu pedido
+                e introducir los datos de tu tarjeta.
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-erp-gold"
+                        style="width:100%;padding:.6rem;font-size:1rem;">
+                    Proceder al pago →
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if client_secret %}
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+(function () {
+    'use strict';
+
+    const stripe = Stripe('{{ publishable_key|escapejs }}');
+    const elements = stripe.elements();
+    const clientSecret = '{{ client_secret|escapejs }}';
+    const pedidoId = '{{ pedido.pk|escapejs }}';
+
+    const card = elements.create('card', {
+        style: {
+            base: {
+                fontFamily: "'Inter', 'Segoe UI', sans-serif",
+                fontSize: '15px',
+                color: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--clr-text').trim() || '#F4F7F2',
+                '::placeholder': {
+                    color: '#A8B5AA'
+                },
+            },
+            invalid: {
+                color: '#C0392B',
+                iconColor: '#C0392B'
+            },
+        },
+    });
+
+    card.mount('#card-element');
+
+    card.on('change', function (event) {
+        document.getElementById('card-errors').textContent =
+            event.error ? event.error.message : '';
+    });
+
+    const btn = document.getElementById('submit-btn');
+
+    btn.addEventListener('click', async function () {
+        btn.disabled = true;
+        btn.textContent = '⏳ Procesando…';
+
+        try {
+            const result = await stripe.confirmCardPayment(
+                clientSecret,
+                {
+                    payment_method: {
+                        card: card
+                    }
+                }
+            );
+
+            if (result.error) {
+                document.getElementById('card-errors').textContent =
+                    result.error.message;
+
+                btn.disabled = false;
+                btn.textContent = '🔐 Confirmar pago de ${{ totales.total }}';
+                return;
+            }
+
+            if (result.paymentIntent &&
+                result.paymentIntent.status === 'succeeded') {
+
+                // Enviar a Django el identificador real del pago.
+                const paymentIntentId = encodeURIComponent(
+                    result.paymentIntent.id
+                );
+
+                window.location.href =
+                    `/catalogo/pago-exitoso/${pedidoId}/?payment_intent=${paymentIntentId}`;
+
+                return;
+            }
+
+            document.getElementById('card-errors').textContent =
+                'El pago todavía no ha sido confirmado.';
+
+            btn.disabled = false;
+            btn.textContent = '🔐 Confirmar pago de ${{ totales.total }}';
+
+        } catch (error) {
+            document.getElementById('card-errors').textContent =
+                'Ocurrió un error al comunicarse con Stripe. Inténtalo nuevamente.';
+
+            btn.disabled = false;
+            btn.textContent = '🔐 Confirmar pago de ${{ totales.total }}';
+        }
+    });
+})();
+</script>
+{% endif %}
+{% endblock %}

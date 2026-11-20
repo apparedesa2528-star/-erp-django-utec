@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Factura #{{ venta.pk }}</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 1.5cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10pt;
+            color: #1A1A2E;
+        }
+        .header-tabla {
+            width: 100%;
+            border-bottom: 2px solid #B8860B;
+            margin-bottom: 20px;
+        }
+        .empresa-nombre {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #0A2342;
+        }
+        .factura-titulo {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #B8860B;
+            text-align: right;
+        }
+        .datos-tabla {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .datos-tabla td {
+            padding: 4px;
+            font-size: 9pt;
+        }
+        .lbl {
+            font-weight: bold;
+            color: #0A2342;
+            width: 20%;
+        }
+        .items-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .items-tabla th {
+            background-color: #0A2342;
+            color: #FFFFFF;
+            padding: 6px;
+            font-size: 9pt;
+            text-align: left;
+        }
+        .items-tabla td {
+            padding: 6px;
+            font-size: 9pt;
+            border-bottom: 1px solid #E8F0FB;
+        }
+        .num {
+            text-align: right;
+        }
+        .total-tabla {
+            width: 40%;
+            margin-left: 60%;
+        }
+        .total-tabla td {
+            padding: 4px;
+            font-size: 10pt;
+        }
+        .total-monto {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #B8860B;
+        }
+    </style>
+</head>
+<body>
+    <table class="header-tabla">
+        <tr>
+            <td>
+                <div class="empresa-nombre">{{ config.nombre_empresa }}</div>
+                <div style="font-size:8pt;color:#5A6A7E;">
+                    RFC: {{ config.rfc|default:"N/A" }} · {{ config.moneda }}
+                </div>
+            </td>
+            <td class="factura-titulo">
+                FACTURA
+                <div style="font-size:10pt;color:#0A2342;">
+                    # {{ venta.pk|stringformat:"05d" }}
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="datos-tabla">
+        <tr>
+            <td class="lbl">Cliente:</td>
+            <td>{{ venta.cliente.nombre }}</td>
+            <td class="lbl">Fecha:</td>
+            <td>{{ venta.fecha|date:"d/m/Y H:i" }}</td>
+        </tr>
+        <tr>
+            <td class="lbl">Correo:</td>
+            <td>{{ venta.cliente.correo }}</td>
+            <td class="lbl">Emisión:</td>
+            <td>{{ hoy|date:"d/m/Y" }}</td>
+        </tr>
+    </table>
+
+    <table class="items-tabla">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Producto</th>
+                <th class="num">Precio Unit.</th>
+                <th class="num">Cant.</th>
+                <th class="num">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in venta.detalles.all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ detalle.producto.nombre }}</td>
+                <td class="num">${{ detalle.precio_unitario }}</td>
+                <td class="num">{{ detalle.cantidad }}</td>
+                <td class="num">${{ detalle.subtotal }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align:center;">Sin detalles registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="total-tabla">
+        <tr>
+            <td class="lbl">Total:</td>
+            <td class="num total-monto">${{ venta.total }}</td>
+        </tr>
+    </table>
+</body>
+</html>

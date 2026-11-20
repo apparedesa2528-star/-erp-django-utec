@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Entrar{% endblock %}
+
+{% block content %}
+
+<div style="
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+">
+
+    <div class="erp-card" style="
+        width: 100%;
+        max-width: 420px;
+        padding: 35px;
+    ">
+
+        <div style="text-align:center; margin-bottom:25px;">
+
+            <div style="
+                width:60px;
+                height:60px;
+                margin:0 auto 15px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                border-radius:15px;
+                background:linear-gradient(135deg,#a337ff,#4b00b5);
+                box-shadow:0 0 20px rgba(139,34,255,.6);
+                font-size:30px;
+            ">
+                🔐
+            </div>
+
+            <h2 style="
+                color:white;
+                font-weight:800;
+                margin-bottom:8px;
+            ">
+                Iniciar sesión
+            </h2>
+
+            <p style="
+                color:#9690b2;
+                font-size:13px;
+            ">
+                Accede al ERP Django
+            </p>
+
+        </div>
+
+
+        {% if form.errors %}
+
+            <div class="erp-alert-danger">
+                Usuario o contraseña incorrectos.
+            </div>
+
+        {% endif %}
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div style="margin-bottom:18px;">
+
+                <label style="
+                    display:block;
+                    color:#d8d3ec;
+                    font-size:13px;
+                    font-weight:600;
+                    margin-bottom:7px;
+                ">
+                    Usuario
+                </label>
+
+                <input
+                    type="text"
+                    name="login"
+                    autofocus
+                    required
+                    style="
+                        width:100%;
+                        padding:11px 13px;
+                        border-radius:8px;
+                        border:1px solid rgba(139,34,255,.55);
+                        background:#0b0620;
+                        color:white;
+                        outline:none;
+                    "
+                >
+
+            </div>
+
+
+            <div style="margin-bottom:22px;">
+
+                <label style="
+                    display:block;
+                    color:#d8d3ec;
+                    font-size:13px;
+                    font-weight:600;
+                    margin-bottom:7px;
+                ">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    required
+                    style="
+                        width:100%;
+                        padding:11px 13px;
+                        border-radius:8px;
+                        border:1px solid rgba(139,34,255,.55);
+                        background:#0b0620;
+                        color:white;
+                        outline:none;
+                    "
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn-erp-primary"
+                style="
+                    width:100%;
+                    border:none;
+                    cursor:pointer;
+                "
+            >
+                🚪 Entrar
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
