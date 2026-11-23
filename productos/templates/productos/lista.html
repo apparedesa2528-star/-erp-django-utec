@@ -1,0 +1,492 @@
+{% extends "base.html" %}
+
+{% block title %}Productos · ERP Django{% endblock %}
+
+{% block extra_css %}
+<style>
+    .productos-page {
+        padding: 35px;
+        color: #ffffff;
+    }
+
+    .productos-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .productos-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .productos-title-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+        box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+    }
+
+    .productos-title h1 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .productos-title p {
+        margin: 4px 0 0;
+        color: #aaa6bd;
+        font-size: 14px;
+    }
+
+    .btn-nuevo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 20px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+        transition: 0.2s;
+    }
+
+    .btn-nuevo:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(168, 85, 247, 0.45);
+    }
+
+    .productos-container {
+        background: rgba(18, 13, 35, 0.92);
+        border: 1px solid rgba(168, 85, 247, 0.25);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+    }
+
+    .productos-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .productos-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 850px;
+    }
+
+    .productos-table thead {
+        background: rgba(124, 58, 237, 0.15);
+    }
+
+    .productos-table th {
+        padding: 17px 18px;
+        text-align: left;
+        color: #c084fc;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+    }
+
+    .productos-table td {
+        padding: 16px 18px;
+        color: #e8e4f0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        vertical-align: middle;
+    }
+
+    .productos-table tbody tr {
+        transition: 0.2s;
+    }
+
+    .productos-table tbody tr:hover {
+        background: rgba(168, 85, 247, 0.07);
+    }
+
+    .producto-id {
+        color: #8f8aa3;
+        font-size: 13px;
+    }
+
+    .producto-nombre {
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .producto-secundario {
+        color: #aaa6bd;
+        font-size: 13px;
+    }
+
+    .precio {
+        color: #a7f3d0;
+        font-weight: 700;
+    }
+
+    .stock {
+        font-weight: 700;
+    }
+
+    .stock-ok {
+        color: #4ade80;
+    }
+
+    .stock-bajo {
+        color: #f87171;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-accion {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 11px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        transition: 0.2s;
+    }
+
+    .btn-detalle {
+        color: #c4b5fd;
+        background: rgba(124, 58, 237, 0.12);
+        border: 1px solid rgba(124, 58, 237, 0.25);
+    }
+
+    .btn-detalle:hover {
+        color: white;
+        background: rgba(124, 58, 237, 0.25);
+    }
+
+    .btn-editar {
+        color: #86efac;
+        background: rgba(34, 197, 94, 0.10);
+        border: 1px solid rgba(34, 197, 94, 0.22);
+    }
+
+    .btn-editar:hover {
+        color: white;
+        background: rgba(34, 197, 94, 0.22);
+    }
+
+    .btn-eliminar {
+        color: #fca5a5;
+        background: rgba(239, 68, 68, 0.10);
+        border: 1px solid rgba(239, 68, 68, 0.22);
+    }
+
+    .btn-eliminar:hover {
+        color: white;
+        background: rgba(239, 68, 68, 0.22);
+    }
+
+    .paginacion {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 22px;
+        border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .pagina-btn {
+        padding: 9px 14px;
+        border-radius: 9px;
+        text-decoration: none;
+        color: #c4b5fd;
+        background: rgba(124, 58, 237, 0.10);
+        border: 1px solid rgba(124, 58, 237, 0.22);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .pagina-btn:hover {
+        color: white;
+        background: rgba(124, 58, 237, 0.25);
+    }
+
+    .pagina-actual {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    .productos-vacio {
+        padding: 60px 20px;
+        text-align: center;
+        color: #aaa6bd;
+    }
+
+    .productos-vacio-icon {
+        font-size: 45px;
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 800px) {
+        .productos-page {
+            padding: 20px;
+        }
+
+        .productos-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-nuevo {
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="productos-page">
+
+    <div class="productos-header">
+
+        <div class="productos-title">
+
+            <div class="productos-title-icon">
+                📦
+            </div>
+
+            <div>
+                <h1>Productos</h1>
+                <p>Gestiona el inventario de productos del ERP</p>
+            </div>
+
+        </div>
+        <a href="{% url 'productos:exportar_excel' %}"> 📊 Exportar Excel </a>
+        <a href="{% url 'productos:crear' %}" class="btn-nuevo">
+            ➕ Nuevo producto
+        </a>
+
+    </div>
+
+
+    <div class="productos-container">
+
+        {% if productos %}
+
+            <div class="productos-table-wrapper">
+
+                <table class="productos-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Proveedor</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for producto in productos %}
+
+                        <tr>
+
+                            <td class="producto-id">
+                                {{ producto.id }}
+                            </td>
+
+                            <td>
+                                <div class="producto-nombre">
+                                    {{ producto.nombre }}
+                                </div>
+                            </td>
+
+                            <td>
+
+                                {% if producto.categoria %}
+
+                                    <span class="producto-secundario">
+                                        {{ producto.categoria }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="producto-secundario">
+                                        Sin categoría
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {% if producto.proveedor %}
+
+                                    <span class="producto-secundario">
+                                        {{ producto.proveedor }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="producto-secundario">
+                                        Sin proveedor
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td class="precio">
+                                ${{ producto.precio }}
+                            </td>
+
+                            <td>
+
+                                {% if producto.stock > 0 %}
+
+                                    <span class="stock stock-ok">
+                                        {{ producto.stock }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="stock stock-bajo">
+                                        0
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                <div class="acciones">
+
+                                    <a
+                                        href="{% url 'productos:detalle' producto_id=producto.id %}"
+                                        class="btn-accion btn-detalle"
+                                    >
+                                        👁️ Ver
+                                    </a>
+
+                                    <a
+                                        href="{% url 'productos:editar' producto_id=producto.id %}"
+                                        class="btn-accion btn-editar"
+                                    >
+                                        ✏️ Editar
+                                    </a>
+
+                                    <a
+                                        href="{% url 'productos:eliminar' producto_id=producto.id %}"
+                                        class="btn-accion btn-eliminar"
+                                    >
+                                        🗑️ Eliminar
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% if is_paginated %}
+
+            <div class="paginacion">
+
+                {% if page_obj.has_previous %}
+
+                    <a
+                        href="?page={{ page_obj.previous_page_number }}"
+                        class="pagina-btn"
+                    >
+                        ← Anterior
+                    </a>
+
+                {% endif %}
+
+
+                <span class="pagina-actual">
+                    Página {{ page_obj.number }}
+                    de
+                    {{ page_obj.paginator.num_pages }}
+                </span>
+
+
+                {% if page_obj.has_next %}
+
+                    <a
+                        href="?page={{ page_obj.next_page_number }}"
+                        class="pagina-btn"
+                    >
+                        Siguiente →
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+
+        {% else %}
+
+            <div class="productos-vacio">
+
+                <div class="productos-vacio-icon">
+                    📦
+                </div>
+
+                <h3>No hay productos</h3>
+
+                <p>
+                    Todavía no existen productos activos en el inventario.
+                </p>
+
+                <br>
+
+                <a
+                    href="{% url 'productos:crear' %}"
+                    class="btn-nuevo"
+                >
+                    ➕ Crear primer producto
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
