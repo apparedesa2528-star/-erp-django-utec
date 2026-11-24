@@ -273,7 +273,7 @@ CELERY_BEAT_SCHEDULE = {
     # Reporte de ventas diario a las 8:00 AM (hora México)
     'reporte-ventas-diario-8am': {
         'task':     'ventas.reporte_ventas_diario',
-        'schedule': crontab(hour=6, minute=35),
+        'schedule': crontab(hour=18, minute=45),
         'options':  {'queue': 'erp_django'},
     },
 
