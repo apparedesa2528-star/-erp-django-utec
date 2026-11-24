@@ -144,7 +144,7 @@ EMAIL_BACKEND = env(
 # Dirección del remitente visible en los correos
 DEFAULT_FROM_EMAIL = env(
     'DEFAULT_FROM_EMAIL',
-    default='ERP Django <noreply@erp-django.com>'
+    default='ERP Django <ap.paredesa.2528@cbtis198.edu.mx>'
 )
 
 # Nombre del asunto con prefijo del sistema
@@ -158,11 +158,7 @@ ADMINS = [
 # Configuración de django-anymail (SendGrid)
 SENDGRID_API_KEY = env('SENDGRID_API_KEY', default='')
 ANYMAIL = {
-    'SENDGRID_API_KEY': SENDGRID_API_KEY,
-    # Reintentar envíos fallidos automáticamente
-    'SEND_DEFAULTS': {
-        'esp_extra': {'ip_pool_name': 'transactional'},
-    },
+   'SENDGRID_API_KEY': SENDGRID_API_KEY,
 }
 # ── JAZZMIN — Personalización del admin con Fable 5 AzulERP ───────────────
 JAZZMIN_SETTINGS = {
@@ -171,7 +167,7 @@ JAZZMIN_SETTINGS = {
     'site_header':      'ERP UTEC Celaya',
     'site_brand':       '📦 ERP Django',
     'welcome_sign':     'Bienvenido al Sistema ERP · UTEC Celaya',
-    'copyright':        'MC. Román Fernando López González · UTEC Celaya',
+    'copyright':        'Ana Paulina Paredes Alvarado · UTEC Celaya',
 
     # Icono del sitio (usar emoji como fallback)
     'site_icon':        None,
@@ -277,7 +273,7 @@ CELERY_BEAT_SCHEDULE = {
     # Reporte de ventas diario a las 8:00 AM (hora México)
     'reporte-ventas-diario-8am': {
         'task':     'ventas.reporte_ventas_diario',
-        'schedule': crontab(hour=8, minute=0),
+        'schedule': crontab(hour=6, minute=35),
         'options':  {'queue': 'erp_django'},
     },
 
